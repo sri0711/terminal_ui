@@ -1,0 +1,10 @@
+{
+	"cSpell.words": [
+		"crossterm",
+		"dotenvy",
+		"ratatui",
+		"reqwest",
+		"rustls",
+		"serde"
+	]
+}
