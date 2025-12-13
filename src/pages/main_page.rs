@@ -3,17 +3,18 @@ use crate::state::player_state::PlayerState;
 impl PlayerState {}
 
 pub mod application {
+
     use ratatui::{
         layout::{Alignment, Constraint, Direction, Layout, Rect},
         style::Stylize,
         symbols::border,
-        widgets::{Block},
+        widgets::{Block, Borders},
         Frame,
     };
 
     use crate::state::player_state::PlayerState;
 
-    pub fn draw(frame: &mut Frame, _: &mut PlayerState) {
+    pub fn draw(frame: &mut Frame, player_state: &mut PlayerState) {
         let outline = Block::bordered()
             .title("> Sri Juke Box <")
             .title_alignment(Alignment::Center)
@@ -22,22 +23,41 @@ pub mod application {
         frame.render_widget(outline.clone(), frame.area());
 
         let inner = outline.inner(frame.area());
-        main_page(frame, inner);
+        main_page(frame, inner, player_state);
     }
 
-    pub fn main_page(frame: &mut Frame, inner_layout: Rect) {
-        let main_screen_layout = Layout::default()
-            .direction(Direction::Horizontal)
-            .constraints([Constraint::Fill(1), Constraint::Fill(3)])
-            .split(inner_layout);
+    pub fn main_page(frame: &mut Frame, inner_layout: Rect, player_state: &mut PlayerState) {
+        if !player_state.show_search {
+            let main_screen_layout = Layout::default()
+                .direction(Direction::Horizontal)
+                .constraints([Constraint::Fill(1), Constraint::Fill(3)])
+                .split(inner_layout);
 
-        let text = Block::default();
+            let text = Block::default().borders(Borders::all());
 
-        frame.render_widget(text.clone(), main_screen_layout[0]);
-        frame.render_widget(text, main_screen_layout[1]);
+            left_container(frame, main_screen_layout[0]);
+            frame.render_widget(text, main_screen_layout[1]);
+        } else {
+            search_box(frame, inner_layout);
+        }
     }
 
-    fn left_container (frame: &mut Frame ,outer_layer:Block)  {
-        let left_sections = Layout::default().direction(Direction::Vertical).constraints([Constraint::Fill(1), Constraint::Fill(2)]).split(outer_layer);
+    fn left_container(frame: &mut Frame, outer_layer: Rect) {
+        let left_sections = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints([Constraint::Fill(1), Constraint::Fill(2)])
+            .split(outer_layer);
+
+        let text = Block::default().borders(Borders::all()).title(" Songs ");
+        let text_btm = Block::default().borders(Borders::all()).title("B.L.E list");
+
+        frame.render_widget(text.clone(), left_sections[0]);
+        frame.render_widget(text_btm, left_sections[1]);
+    }
+
+    fn search_box(frame: &mut Frame, inner_layout: Rect) {
+        let textbox = Block::bordered().title("search");
+
+        frame.render_widget(textbox, inner_layout);
     }
 }
