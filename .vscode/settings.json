@@ -1,6 +1,7 @@
 {
 	"cSpell.words": [
 		"crossterm",
+		"dotenv",
 		"dotenvy",
 		"ratatui",
 		"reqwest",
