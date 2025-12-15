@@ -3,22 +3,26 @@ pub mod init {
     use ratatui::{
         layout::{Constraint, Direction, Layout, Rect},
         style::Stylize,
-        widgets::Block,
+        widgets::{Block, Paragraph},
         Frame,
     };
 
     pub trait SearchProperties {
         fn toggle(player_state: &mut PlayerState);
+        fn begin_search(player_state: &mut PlayerState);
     }
 
     impl SearchProperties for PlayerState {
         fn toggle(player_state: &mut PlayerState) {
             player_state.show_search = !player_state.show_search;
-            return;
+        }
+
+        fn begin_search(player_state: &mut PlayerState) {
+            player_state.trigger_search = !player_state.trigger_search
         }
     }
 
-    pub fn component(frame: &mut Frame, inner_layout: Rect, _player_state: &mut PlayerState) {
+    pub fn component(frame: &mut Frame, inner_layout: Rect, player_state: &mut PlayerState) {
         let search_box_vertical = Layout::default()
             .constraints([
                 Constraint::Percentage(42),
@@ -38,7 +42,12 @@ pub mod init {
             .split(search_box_vertical[1]);
 
         let textbox = Block::bordered().title(" Search ").bold();
-
-        frame.render_widget(textbox, search_box[1]);
+        let text = format!("-> {}", player_state.input);
+        let text_element = Paragraph::new(text).block(textbox);
+        frame.render_widget(text_element, search_box[1]);
+        let search_box_position = search_box[1];
+        let cursor_x = search_box_position.x + 4 + player_state.cursor as u16;
+        let cursor_y = search_box_position.y + 1;
+        frame.set_cursor_position((cursor_x, cursor_y));
     }
 }

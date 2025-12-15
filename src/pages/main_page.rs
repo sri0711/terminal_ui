@@ -45,6 +45,7 @@ pub mod application {
             .split(outer_layer);
 
         let text = Block::default().borders(Borders::all()).title(" Songs ");
+        
         let text_btm = Block::default()
             .borders(Borders::all())
             .title(" B.L.E List ");

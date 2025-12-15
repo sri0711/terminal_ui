@@ -30,7 +30,9 @@ pub mod handler {
         {
             if player_state.show_search {
                 match (code, modifiers) {
-                    (KeyCode::Enter | KeyCode::Char('\r') | KeyCode::Char('\n'), _) => {}
+                    (KeyCode::Enter | KeyCode::Char('\r') | KeyCode::Char('\n'), _) => {
+                        <PlayerState as SearchProperties>::begin_search(player_state);
+                    }
 
                     // for search input handle
                     (KeyCode::Char(c), &KeyModifiers::NONE) => {
