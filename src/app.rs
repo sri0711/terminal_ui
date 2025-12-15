@@ -11,6 +11,7 @@ pub mod start {
             terminal
                 .draw(|f| main_page::application::draw(f, &mut player_state))
                 .expect("unable to create a terminal");
+            app_events::handler::application(&mut player_state);
             if app_events::handler::exit().unwrap() {
                 break;
             }

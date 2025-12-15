@@ -1,9 +1,7 @@
-use crate::state::player_state::PlayerState;
-
-impl PlayerState {}
-
 pub mod application {
 
+    // imports for this mod
+    use crate::{pages::search_popup, state::player_state::PlayerState};
     use ratatui::{
         layout::{Alignment, Constraint, Direction, Layout, Rect},
         style::Stylize,
@@ -11,8 +9,6 @@ pub mod application {
         widgets::{Block, Borders},
         Frame,
     };
-
-    use crate::state::player_state::PlayerState;
 
     pub fn draw(frame: &mut Frame, player_state: &mut PlayerState) {
         let outline = Block::bordered()
@@ -38,7 +34,7 @@ pub mod application {
             left_container(frame, main_screen_layout[0]);
             frame.render_widget(text, main_screen_layout[1]);
         } else {
-            search_box(frame, inner_layout);
+            search_popup::init::component(frame, inner_layout, player_state);
         }
     }
 
@@ -49,15 +45,11 @@ pub mod application {
             .split(outer_layer);
 
         let text = Block::default().borders(Borders::all()).title(" Songs ");
-        let text_btm = Block::default().borders(Borders::all()).title("B.L.E list");
+        let text_btm = Block::default()
+            .borders(Borders::all())
+            .title(" B.L.E List ");
 
         frame.render_widget(text.clone(), left_sections[0]);
         frame.render_widget(text_btm, left_sections[1]);
-    }
-
-    fn search_box(frame: &mut Frame, inner_layout: Rect) {
-        let textbox = Block::bordered().title("search");
-
-        frame.render_widget(textbox, inner_layout);
     }
 }

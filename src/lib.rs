@@ -10,4 +10,5 @@ pub mod event {
 
 pub mod pages {
     pub mod main_page;
+    pub mod search_popup;
 }
