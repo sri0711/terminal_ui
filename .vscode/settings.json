@@ -3,6 +3,7 @@
 		"crossterm",
 		"dotenv",
 		"dotenvy",
+		"Pkcs",
 		"ratatui",
 		"reqwest",
 		"rustls",
