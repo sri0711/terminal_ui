@@ -3,10 +3,13 @@
 		"crossterm",
 		"dotenv",
 		"dotenvy",
+		"kbps",
+		"perma",
 		"Pkcs",
 		"ratatui",
 		"reqwest",
 		"rustls",
-		"serde"
+		"serde",
+		"vlink"
 	]
 }

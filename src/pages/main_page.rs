@@ -1,7 +1,10 @@
 pub mod application {
 
     // imports for this mod
-    use crate::{pages::search_popup, state::player_state::PlayerState};
+    use crate::{
+        pages::{search_popup, song_list},
+        state::player_state::PlayerState,
+    };
     use ratatui::{
         layout::{Alignment, Constraint, Direction, Layout, Rect},
         style::Stylize,
@@ -31,26 +34,24 @@ pub mod application {
 
             let text = Block::default().borders(Borders::all());
 
-            left_container(frame, main_screen_layout[0]);
+            left_container(frame, main_screen_layout[0], player_state);
             frame.render_widget(text, main_screen_layout[1]);
         } else {
             search_popup::init::component(frame, inner_layout, player_state);
         }
     }
 
-    fn left_container(frame: &mut Frame, outer_layer: Rect) {
+    fn left_container(frame: &mut Frame, outer_layer: Rect, player_state: &mut PlayerState) {
         let left_sections = Layout::default()
             .direction(Direction::Vertical)
             .constraints([Constraint::Fill(1), Constraint::Fill(2)])
             .split(outer_layer);
 
-        let text = Block::default().borders(Borders::all()).title(" Songs ");
-        
         let text_btm = Block::default()
             .borders(Borders::all())
             .title(" B.L.E List ");
 
-        frame.render_widget(text.clone(), left_sections[0]);
+        song_list::init::component(frame, left_sections[0], player_state);
         frame.render_widget(text_btm, left_sections[1]);
     }
 }

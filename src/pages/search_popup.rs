@@ -18,6 +18,7 @@ pub mod init {
         }
 
         fn begin_search(player_state: &mut PlayerState) {
+            player_state.show_search = !player_state.show_search;
             player_state.trigger_search = !player_state.trigger_search
         }
     }
