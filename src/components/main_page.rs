@@ -2,7 +2,7 @@ pub mod application {
 
     // imports for this mod
     use crate::{
-        pages::{search_popup, song_list},
+        components::{search_popup, song_list},
         shared::player_state::PlayerState,
     };
     use ratatui::{

@@ -43,11 +43,11 @@ pub mod init {
             .split(search_box_vertical[1]);
 
         let textbox = Block::bordered().title(" Search ").bold();
-        let text = format!("-> {}", player_state.input);
+        let text = format!("->{}", player_state.input);
         let text_element = Paragraph::new(text).block(textbox);
         frame.render_widget(text_element, search_box[1]);
         let search_box_position = search_box[1];
-        let cursor_x = search_box_position.x + 4 + player_state.cursor as u16;
+        let cursor_x = search_box_position.x + 3 + player_state.cursor as u16;
         let cursor_y = search_box_position.y + 1;
         frame.set_cursor_position((cursor_x, cursor_y));
     }

@@ -1,3 +1,5 @@
+use crate::helpers::audio_decode::parse_url;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SearchSongMain {

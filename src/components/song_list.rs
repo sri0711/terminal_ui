@@ -11,7 +11,7 @@ impl SongListProperties for PlayerState {
 }
 
 pub mod init {
-    use crate::{pages::song_list::SongListProperties, shared::player_state::PlayerState};
+    use crate::{components::song_list::SongListProperties, shared::player_state::PlayerState};
     use ratatui::{
         layout::Rect,
         widgets::{Block, Borders},
@@ -22,7 +22,7 @@ pub mod init {
         if player_state.trigger_search {
             <PlayerState as SongListProperties>::fetch_songs(player_state);
         }
-        let text = Block::default().borders(Borders::all()).title(" Songs.. ");
+        let text = Block::default().borders(Borders::all()).title(" Songs ");
 
         frame.render_widget(text, area);
     }

@@ -1,5 +1,7 @@
 pub mod handler {
-    use crate::{pages::search_popup::init::SearchProperties, shared::player_state::PlayerState};
+    use crate::{
+        components::search_popup::init::SearchProperties, shared::player_state::PlayerState,
+    };
     use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyModifiers};
     use std::time::Duration;
 

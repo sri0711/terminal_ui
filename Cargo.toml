@@ -1,6 +1,6 @@
 [package]
 name = "terminal_app"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
 
 [profile.dev]
@@ -17,6 +17,7 @@ reqwest = { version = "0.12.26", default-features = false, features = [
     "json",
     "rustls-tls",
     "stream",
+    "blocking",
 ] }
 serde = "1.0.213"
 serde_json = "1.0.132"
