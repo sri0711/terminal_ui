@@ -1,5 +1,5 @@
 pub mod init {
-    use crate::state::player_state::PlayerState;
+    use crate::shared::player_state::PlayerState;
     use ratatui::{
         layout::{Constraint, Direction, Layout, Rect},
         style::Stylize,

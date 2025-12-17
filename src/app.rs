@@ -1,5 +1,5 @@
 pub mod start {
-    use crate::{event::app_events, pages::main_page, state::player_state::PlayerState};
+    use crate::{event::app_events, pages::main_page, shared::player_state::PlayerState};
     use ratatui::{prelude::CrosstermBackend, Terminal};
     use std::io;
 

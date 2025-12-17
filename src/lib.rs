@@ -14,6 +14,6 @@ pub mod pages {
     pub mod song_list;
 }
 
-pub mod state {
+pub mod shared {
     pub mod player_state;
 }

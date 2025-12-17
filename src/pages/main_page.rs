@@ -3,7 +3,7 @@ pub mod application {
     // imports for this mod
     use crate::{
         pages::{search_popup, song_list},
-        state::player_state::PlayerState,
+        shared::player_state::PlayerState,
     };
     use ratatui::{
         layout::{Alignment, Constraint, Direction, Layout, Rect},

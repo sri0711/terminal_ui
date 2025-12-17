@@ -1,8 +1,7 @@
 pub mod handler {
+    use crate::{pages::search_popup::init::SearchProperties, shared::player_state::PlayerState};
     use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyModifiers};
     use std::time::Duration;
-
-    use crate::{pages::search_popup::init::SearchProperties, state::player_state::PlayerState};
 
     pub fn read_event() -> Option<Event> {
         if event::poll(Duration::from_millis(0)).ok()? {

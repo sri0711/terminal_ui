@@ -1,4 +1,4 @@
-use crate::state::player_state::PlayerState;
+use crate::shared::player_state::PlayerState;
 
 pub trait SongListProperties {
     fn fetch_songs(player_state: &mut PlayerState);
@@ -11,7 +11,7 @@ impl SongListProperties for PlayerState {
 }
 
 pub mod init {
-    use crate::{pages::song_list::SongListProperties, state::player_state::PlayerState};
+    use crate::{pages::song_list::SongListProperties, shared::player_state::PlayerState};
     use ratatui::{
         layout::Rect,
         widgets::{Block, Borders},
