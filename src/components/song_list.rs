@@ -67,11 +67,17 @@ impl SongListProperties for PlayerState {
                         if let Some(song_details) = song_data.more_info.clone() {
                             song_name = format!(
                                 "{}-{}",
-                                song_data.title.clone().unwrap(),
-                                song_details.album.clone().unwrap()
+                                html_escape::decode_html_entities(
+                                    &song_data.title.clone().unwrap()
+                                ),
+                                html_escape::decode_html_entities(
+                                    &song_details.album.clone().unwrap()
+                                )
                             );
                         } else {
-                            song_name = song_data.title.clone().unwrap()
+                            song_name =
+                                html_escape::decode_html_entities(&song_data.title.clone().unwrap())
+                                    .to_string()
                         }
                         song_name
                     })
@@ -86,6 +92,7 @@ pub mod init {
     use crate::{components::song_list::SongListProperties, shared::player_state::PlayerState};
     use ratatui::{
         layout::Rect,
+        style::{Modifier, Style},
         widgets::{Block, Borders, List, ListItem},
         Frame,
     };
@@ -107,8 +114,11 @@ pub mod init {
                 .collect(),
             _ => vec![ListItem::new("No songs found")],
         };
-        let name_element = List::new(name_items).block(song_component);
+        let name_element = List::new(name_items)
+            .highlight_style(Style::default().add_modifier(Modifier::BOLD))
+            .highlight_symbol("> ")
+            .block(song_component);
 
-        frame.render_widget(name_element, area);
+        frame.render_stateful_widget(name_element, area, &mut player_state.highlight_state);
     }
 }

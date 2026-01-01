@@ -2,7 +2,7 @@ pub mod application {
 
     // imports for this mod
     use crate::{
-        components::{notification, search_popup, song_list},
+        components::{notification, player_screen, search_popup, song_list},
         shared::player_state::PlayerState,
     };
     use ratatui::{
@@ -33,10 +33,8 @@ pub mod application {
                 .constraints([Constraint::Fill(1), Constraint::Fill(3)])
                 .split(inner_layout);
 
-            let text = Block::default().borders(Borders::all());
-
             left_container(frame, main_screen_layout[0], player_state);
-            frame.render_widget(text, main_screen_layout[1]);
+            player_screen::init::component(frame, main_screen_layout[1], player_state);
         } else {
             search_popup::init::component(frame, inner_layout, player_state);
         }

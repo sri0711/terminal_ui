@@ -3,6 +3,7 @@ pub mod app;
 pub mod components {
     pub mod main_page;
     pub mod notification;
+    pub mod player_screen;
     pub mod search_popup;
     pub mod song_list;
 }
@@ -16,6 +17,7 @@ pub mod helpers {
 }
 
 pub mod shared {
+    pub mod audio_state;
     pub mod player_state;
 }
 

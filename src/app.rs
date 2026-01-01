@@ -1,5 +1,5 @@
 pub mod start {
-    use crate::{event::app_events, components::main_page, shared::player_state::PlayerState};
+    use crate::{components::main_page, event::app_events, shared::player_state::PlayerState};
     use ratatui::{prelude::CrosstermBackend, Terminal};
     use std::io;
 
@@ -12,6 +12,7 @@ pub mod start {
         let mut terminal =
             Terminal::new(backend).unwrap_or_else(|_| panic!("unable to create a terminal ui"));
         let mut player_state = PlayerState::default();
+        player_state.highlight_state.select(Some(0));
         loop {
             terminal
                 .draw(|f| main_page::application::draw(f, &mut player_state))
@@ -28,11 +29,11 @@ pub mod start {
     }
     pub fn check_for_requirements() {
         // check for env
-        let url = std::env::var("BASE_URL").unwrap_or_else(|_| panic!("unable to load env!"));
+        let url = std::env::var("TEST_URL").unwrap_or_else(|_| panic!("unable to load env!"));
 
         // check for internet connectivity
         let client = reqwest::blocking::Client::new();
-        let response = client.get(url).send();
+        let response = client.get(format!("{}{}", url, "check")).send();
         response.unwrap_or_else(|_| panic!("please have a valid internet connection"));
     }
 }

@@ -3,11 +3,13 @@
 		"crossterm",
 		"dotenv",
 		"dotenvy",
+		"isomp",
 		"kbps",
 		"perma",
 		"Pkcs",
 		"ratatui",
 		"reqwest",
+		"rodio",
 		"rustls",
 		"serde",
 		"vlink"
