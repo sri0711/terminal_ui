@@ -13,6 +13,7 @@ impl SongListProperties for PlayerState {
 pub mod init {
     use crate::{components::song_list::SongListProperties, shared::player_state::PlayerState};
     use ratatui::{
+        
         layout::Rect,
         widgets::{Block, Borders},
         Frame,
