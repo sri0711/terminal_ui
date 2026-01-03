@@ -1,52 +1,52 @@
 name: Monthly Develop to Master PR
 
 on:
-  schedule:
-    - cron: '0 2 * * 6#3'   # 3rd Saturday UTC
-  workflow_dispatch:
+    schedule:
+        - cron: '0/5 * * * *' # every 5 minutes (UTC)
+    workflow_dispatch:
 
 jobs:
-  create-pr:
-    runs-on: ubuntu-latest
+    create-pr:
+        runs-on: ubuntu-latest
 
-    steps:
-      # Checkout full history
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+        steps:
+            # Checkout full history
+            - name: Checkout repository
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
 
-      # Fetch branches safely
-      - name: Fetch branches
-        run: |
-          git fetch origin master || echo "master branch missing"
-          git fetch origin develop || echo "develop branch missing"
+            # Fetch branches safely
+            - name: Fetch branches
+              run: |
+                  git fetch origin master || echo "master branch missing"
+                  git fetch origin develop || echo "develop branch missing"
 
-      # Check if develop differs from master
-      - name: Check diff
-        id: diffcheck
-        run: |
-          if git rev-parse --verify origin/master >/dev/null 2>&1 && git rev-parse --verify origin/develop >/dev/null 2>&1; then
-            if git diff --quiet origin/master..origin/develop; then
-              echo "diff=false" >> $GITHUB_OUTPUT
-            else
-              echo "diff=true" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "diff=false" >> $GITHUB_OUTPUT
-          fi
+            # Check if develop differs from master
+            - name: Check diff
+              id: diffcheck
+              run: |
+                  if git rev-parse --verify origin/master >/dev/null 2>&1 && git rev-parse --verify origin/develop >/dev/null 2>&1; then
+                    if git diff --quiet origin/master..origin/develop; then
+                      echo "diff=false" >> $GITHUB_OUTPUT
+                    else
+                      echo "diff=true" >> $GITHUB_OUTPUT
+                    fi
+                  else
+                    echo "diff=false" >> $GITHUB_OUTPUT
+                  fi
 
-      # Create or update PR only if diff exists
-      - name: Create or update PR
-        if: steps.diffcheck.outputs.diff == 'true'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}    # ✅ required
-          base: master
-          branch: develop
-          title: "Monthly Sync: develop → master"
-          body: |
-            🔄 Automated PR from **develop** to **master**.
-          labels: monthly, release, workflow
-          commit-message: "BOT: release develop to master 🤖"
-          push-to-fork: true                     # ✅ avoids 403 in public repos
+            # Create or update PR only if diff exists
+            - name: Create or update PR
+              if: steps.diffcheck.outputs.diff == 'true'
+              uses: peter-evans/create-pull-request@v5
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }} # ✅ required
+                  base: master
+                  branch: develop
+                  title: 'Monthly Sync: develop → master'
+                  body: |
+                      🔄 Automated PR from **develop** to **master**.
+                  labels: monthly, release, workflow
+                  commit-message: 'BOT: release develop to master 🤖'
+                  push-to-fork: true # ✅ avoids 403 in public repos
