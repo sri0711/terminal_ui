@@ -1,0 +1,52 @@
+name: Rust AI Optimizer
+
+on:
+    pull_request: # runs for every PR to any branch
+    workflow_dispatch:
+
+jobs:
+    rust-ai-review:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            # Install Rust
+            - name: Install Rust
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+
+            # Install Clippy & Rustfmt
+            - name: Install Components
+              run: rustup component add clippy rustfmt
+
+            # Run Clippy to get warnings
+            - name: Run Clippy
+              run: cargo clippy --all-targets --all-features -- -D warnings
+
+            # Run Rustfmt check
+            - name: Run Rustfmt
+              run: cargo fmt --all -- --check
+
+            # Get the diff of the PR
+            - name: Get PR diff
+              run: git diff origin/main...HEAD > pr.diff
+
+            # Run AI Suggestion (Example: local GPT model)
+            - name: AI Optimization Suggestion
+              run: |
+                  # Install llama.cpp CLI (or GPT4All)
+                  git clone https://github.com/ggerganov/llama.cpp
+                  cd llama.cpp
+                  mkdir build && cd build
+                  cmake ..
+                  make
+                  # Run model to suggest Rust improvements on diff
+                  ../main -m ../models/ggml-model.bin -p "Analyze this Rust diff and suggest optimized code with exact changes:" < ../../pr.diff > ../../ai_suggestions.txt
+
+            # Comment on PR with AI Suggestions
+            - name: Post AI Suggestions as PR comment
+              uses: marocchino/sticky-pull-request-comment@v2
+              with:
+                  path: ai_suggestions.txt
