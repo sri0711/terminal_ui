@@ -1,4 +1,4 @@
-use crate::{components::notification::notification, shared::player_state::PlayerState};
+use crate::{components::notification_page::notification, shared::player_state::PlayerState};
 
 pub trait PlayerScreen {
     fn load_selected_song(player_state: &mut PlayerState);

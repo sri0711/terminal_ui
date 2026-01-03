@@ -13,6 +13,5 @@ pub fn parse_url(hashed_url: String) -> String {
 
     let cipher = DesEcb::new_from_slices(key, &[]).unwrap();
     let decrypted_bytes = cipher.decrypt_vec(&encrypted).expect("Decryption failed");
-    let decrypted = String::from_utf8(decrypted_bytes).expect("Invalid UTF-8");
-    decrypted
+    String::from_utf8(decrypted_bytes).expect("Invalid UTF-8")
 }

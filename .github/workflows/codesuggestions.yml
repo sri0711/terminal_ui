@@ -1,0 +1,60 @@
+name: Rust AI Optimizer
+
+on:
+    pull_request: # triggers for PRs to any branch
+    workflow_dispatch:
+
+jobs:
+    rust-ai-review:
+        runs-on: ubuntu-latest
+        steps:
+            # Checkout PR branch with full history
+            - name: Checkout PR
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0 # fetch full history for merge base
+
+            # Fetch the target branch (base branch of the PR)
+            - name: Fetch target branch
+              run: |
+                  git fetch origin ${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}
+
+            # Install Rust toolchain
+            - name: Install Rust
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+
+            # Install Clippy & Rustfmt
+            - name: Install Components
+              run: rustup component add clippy rustfmt
+
+            # Run Clippy
+            - name: Run Clippy
+              run: cargo clippy --all-targets --all-features -- -D warnings
+
+            # Run Rustfmt check
+            - name: Run Rustfmt
+              run: cargo fmt --all -- --check
+
+            # Get PR diff dynamically (works for any base branch)
+            - name: Get PR diff
+              run: |
+                  git diff origin/${{ github.event.pull_request.base.ref }}...HEAD > pr.diff
+
+            # Run AI suggestion using local LLM (llama.cpp / GPT4All)
+            - name: AI Optimization Suggestion
+              run: |
+                  git clone https://github.com/ggerganov/llama.cpp
+                  cd llama.cpp
+                  mkdir build && cd build
+                  cmake -DLLAMA_CURL=OFF ..
+                  make
+                  ../main -m ../models/ggml-model.bin -p "Analyze this Rust diff and suggest optimized code with exact changes:" < ../../pr.diff > ../../ai_suggestions.txt
+
+            # Post AI suggestions as a PR comment
+            - name: Post AI Suggestions as PR comment
+              uses: marocchino/sticky-pull-request-comment@v2
+              with:
+                  path: ai_suggestions.txt

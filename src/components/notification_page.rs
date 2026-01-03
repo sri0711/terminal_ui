@@ -1,4 +1,5 @@
 pub mod notification {
+    #[allow(clippy::useless_attribute)]
     use lazy_static::lazy_static;
     use ratatui::{
         layout::Rect,

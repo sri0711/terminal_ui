@@ -2,7 +2,7 @@ pub mod app;
 
 pub mod components {
     pub mod main_page;
-    pub mod notification;
+    pub mod notification_page;
     pub mod player_screen;
     pub mod search_popup;
     pub mod song_list;
