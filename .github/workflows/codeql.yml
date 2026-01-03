@@ -14,15 +14,15 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+      - name: Initialize CodeQL for Rust
+        uses: github/codeql-action/init@3
         with:
-          languages: auto
+          languages: rust
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+      - name: Build Rust project
+        run: cargo build --release
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
