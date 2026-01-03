@@ -1,6 +1,9 @@
-use std::io;
-use crossterm::{execute, terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode}};
+use crossterm::{
+    execute,
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+};
 use dotenvy::dotenv;
+use std::io;
 use terminal_app::app::start;
 
 fn main() -> Result<(), io::Error> {
