@@ -44,7 +44,6 @@ jobs:
                   git diff origin/${{ github.event.pull_request.base.ref }}...HEAD > pr.diff
 
             # Run AI suggestion using local LLM (llama.cpp / GPT4All)
-            # Run AI suggestion using local LLM (llama.cpp / GPT4All)
             - name: AI Optimization Suggestion
               run: |
                   git clone https://github.com/ggerganov/llama.cpp
