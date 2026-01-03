@@ -59,11 +59,8 @@ pub mod handler {
                     _ => {}
                 }
             }
-            match (code, modifiers) {
-                (KeyCode::Char('k'), &KeyModifiers::CONTROL) => {
-                    <PlayerState as SearchProperties>::toggle(player_state);
-                }
-                _ => {}
+            if let (KeyCode::Char('k'), &KeyModifiers::CONTROL) = (code, modifiers) {
+                <PlayerState as SearchProperties>::toggle(player_state);
             }
         }
     }

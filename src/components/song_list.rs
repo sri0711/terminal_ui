@@ -1,5 +1,5 @@
 use crate::{
-    components::notification::notification::{self, Options},
+    components::notification_page::notification::{self, Options},
     shared::player_state::PlayerState,
     types::song_model::SearchSongMain,
 };
@@ -15,7 +15,6 @@ impl SongListProperties for PlayerState {
         if player_state.input.len() >= 3 {
             Self::update_song_list(player_state);
             player_state.trigger_search = !player_state.trigger_search;
-            return;
         } else {
             Options {
                 message: String::from("Please enter at least 3 characters to search."),
@@ -25,7 +24,6 @@ impl SongListProperties for PlayerState {
             .show();
             player_state.trigger_search = false;
             player_state.show_search = true;
-            return;
         }
     }
 
