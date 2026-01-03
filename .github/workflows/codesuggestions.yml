@@ -1,16 +1,25 @@
 name: Rust AI Optimizer
 
 on:
-  pull_request: # triggers for PRs to any branch
+  pull_request:  # triggers for PRs to any branch
   workflow_dispatch:
 
 jobs:
   rust-ai-review:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      # Checkout PR branch with full history
+      - name: Checkout PR
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0   # fetch full history for merge base
 
-      # Install Rust
+      # Fetch the target branch (base branch of the PR)
+      - name: Fetch target branch
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}
+
+      # Install Rust toolchain
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -25,17 +34,16 @@ jobs:
       - name: Run Clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
 
-      # Run Rustfmt
+      # Run Rustfmt check
       - name: Run Rustfmt
         run: cargo fmt --all -- --check
 
-      # Get PR diff (dynamic base branch)
+      # Get PR diff dynamically (works for any base branch)
       - name: Get PR diff
         run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }}
           git diff origin/${{ github.event.pull_request.base.ref }}...HEAD > pr.diff
 
-      # Run AI Suggestion
+      # Run AI suggestion using local LLM (llama.cpp / GPT4All)
       - name: AI Optimization Suggestion
         run: |
           git clone https://github.com/ggerganov/llama.cpp
@@ -45,7 +53,7 @@ jobs:
           make
           ../main -m ../models/ggml-model.bin -p "Analyze this Rust diff and suggest optimized code with exact changes:" < ../../pr.diff > ../../ai_suggestions.txt
 
-      # Comment on PR
+      # Post AI suggestions as a PR comment
       - name: Post AI Suggestions as PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
