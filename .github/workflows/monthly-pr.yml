@@ -2,8 +2,7 @@ name: Monthly Develop to Master PR
 
 on:
   schedule:
-    # Runs monthly (example: 14th day – adjust if needed)
-    - cron: '0/5 * * * *'
+    - cron: '*/5 * * * *'   # every 5 minutes (UTC)
   workflow_dispatch:
 
 jobs:
@@ -11,20 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0   # IMPORTANT for diff check
 
-      - name: Create Pull Request only if changes exist
-        uses: peter-evans/create-pull-request@v6
+      - name: Check if develop differs from master
+        id: diffcheck
+        run: |
+          git fetch origin master develop
+          if git diff --quiet origin/master..origin/develop; then
+            echo "diff=false" >> $GITHUB_OUTPUT
+          else
+            echo "diff=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create or update PR
+        if: steps.diffcheck.outputs.diff == 'true'
+        uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: master
           branch: develop
           title: "Monthly Sync: develop → master"
           body: |
-            🔄 Automated monthly PR from **develop** to **master**.
+            🔄 Automated PR from **develop** to **master**.
 
-            ✔ Triggered monthly  
-            ✔ Created only when changes exist
-          labels: Monthly release workflow
-          skip-if-empty: true
+            ✔ Runs on schedule  
+            ✔ Created or updated only when changes exist
+          labels: monthly, release, workflow
+          commit-message: "BOT: release develop to master 🤖"
