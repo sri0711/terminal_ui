@@ -1,0 +1,28 @@
+name: Monthly Develop to Master PR
+
+on:
+  schedule:
+    # 3rd Saturday of every month at 02:00 UTC
+    - cron: '0 2 14 * *'
+  workflow_dispatch: # allows manual run
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: master
+          branch: develop
+          title: "Monthly Sync: develop → master"
+          body: |
+            🔄 Automated monthly PR from **develop** to **master**.
+
+            ✔ Triggered on the 3rd weekend of the month  
+            ✔ Includes automated vulnerability checks
+          labels: automated, monthly-pr

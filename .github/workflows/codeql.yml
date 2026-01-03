@@ -1,0 +1,28 @@
+name: Code Vulnerability Scan (CodeQL)
+
+on:
+  pull_request:   # runs for every PR to any branch
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL for Rust
+        uses: github/codeql-action/init@v3
+        with:
+          languages: rust
+
+      - name: Build Rust project
+        run: cargo build --release
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3

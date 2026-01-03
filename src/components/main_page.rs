@@ -2,7 +2,7 @@ pub mod application {
 
     // imports for this mod
     use crate::{
-        components::{search_popup, song_list},
+        components::{notification, search_popup, song_list},
         shared::player_state::PlayerState,
     };
     use ratatui::{
@@ -14,6 +14,7 @@ pub mod application {
     };
 
     pub fn draw(frame: &mut Frame, player_state: &mut PlayerState) {
+        notification::notification::render(frame);
         let outline = Block::bordered()
             .title("> Sri Juke Box <")
             .title_alignment(Alignment::Center)
