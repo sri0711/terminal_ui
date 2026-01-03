@@ -6,6 +6,14 @@ edition = "2021"
 [profile.dev]
 incremental = false
 
+[profile.release]
+incremental = false
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
 [dependencies]
 base64 = { version = "0.22.1" }
 block-modes = { version = "0.8.1" }

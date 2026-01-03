@@ -14,6 +14,7 @@ pub mod event {
 
 pub mod helpers {
     pub mod audio_decode;
+    pub mod core_audio_module;
 }
 
 pub mod shared {

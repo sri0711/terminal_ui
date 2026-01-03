@@ -6,4 +6,5 @@ pub struct AudioState {
     pub selected_song: Option<String>,
     pub audio_url: String,
     pub audio_buffer: Option<Vec<u8>>,
+    pub is_playing: bool,
 }
