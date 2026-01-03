@@ -1,0 +1,6 @@
+#!/bin/sh
+COMMIT_MSG=$(cat "$1")
+echo "Running commitlint on commit message:"
+echo "$COMMIT_MSG"
+# Run commitlint
+cargo commitlint check "$COMMIT_MSG"

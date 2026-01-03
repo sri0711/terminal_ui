@@ -75,9 +75,10 @@ impl PlayerScreen for PlayerState {
                 let message = "Failed to fetch audio buffer".to_string();
                 notification::Options {
                     level: notification::Level::Error,
-                    message: message,
+                    message,
                     ..notification::Options::default()
-                };
+                }
+                .show();
                 vec![].into()
             });
             player_state.audio_state.audio_buffer = Some(bytes.to_vec());
@@ -108,7 +109,9 @@ pub mod init {
             <PlayerState as super::PlayerScreen>::load_selected_song(player_state);
         }
 
-        if player_state.audio_state.selected_song.is_some() {}
+        if player_state.audio_state.selected_song.is_some() {
+            todo!();
+        }
         let text = Block::default().borders(Borders::all());
 
         if player_state.audio_state.selected_song.is_some() {

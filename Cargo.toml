@@ -15,7 +15,6 @@ panic = "abort"
 strip = true
 
 [dev-dependencies]
-cargo-commitlint = { version = "1.0.0" }
 husky-rs = { version = "0.1.5" }
 
 [dependencies]

@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+
+echo "🔧 Setting up git hooks..."
+
+# Use repo-local hooks
+git config core.hooksPath .githooks
+
+# Install cargo-commitlint if missing
+if ! command -v cargo-commitlint >/dev/null 2>&1; then
+  echo "📦 Installing cargo-commitlint..."
+  cargo install cargo-commitlint
+else
+  echo "✅ cargo-commitlint already installed"
+fi
+
+echo "🎉 Git hooks ready!"
+
+echo "Running rustfmt..."
+cargo fmt --all
+
+echo "Running clippy..."
+cargo clippy --all-targets --all-features -- -D warnings
+
+echo "All checks passed!"

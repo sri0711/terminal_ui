@@ -59,10 +59,8 @@ pub mod handler {
                     }
                     _ => {}
                 }
-            } else {
-                if Some(player_state.song_list.as_ref().is_some()) == Some(true) {
-                    player_events(player_state, event);
-                }
+            } else if Some(player_state.song_list.as_ref().is_some()) == Some(true) {
+                player_events(player_state, event);
             }
             if let (KeyCode::Char('k'), &KeyModifiers::CONTROL) = (code, modifiers) {
                 <PlayerState as SearchProperties>::toggle(player_state);
@@ -93,7 +91,7 @@ pub mod handler {
                                 i
                             }
                         }
-                        _ => Some(0).unwrap().to_owned(),
+                        _ => 0.to_owned(),
                     };
                     player_state.highlight_state.select(Some(i));
                 }
@@ -128,8 +126,7 @@ pub mod handler {
                         .unwrap()
                         .results
                         .unwrap()
-                        .iter()
-                        .nth(selected_song_index)
+                        .get(selected_song_index)
                         .cloned();
                 }
                 _ => {}
