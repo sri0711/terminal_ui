@@ -37,7 +37,7 @@ jobs:
         if: steps.diffcheck.outputs.diff == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           base: master
           branch: develop
           title: "Monthly Sync: develop → master"
