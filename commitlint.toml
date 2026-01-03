@@ -1,0 +1,20 @@
+conventional = true
+
+types = [
+  "feat",
+  "fix",
+  "docs",
+  "style",
+  "refactor",
+  "perf",
+  "test",
+  "FEAT",
+  "FIX",
+  "DOCS",
+  "STYLE",
+  "REFACTOR",
+  "PERF",
+  "TEST"
+]
+
+max_header_length = 72
